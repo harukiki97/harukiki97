@@ -118,6 +118,6 @@ Docker, Vercel, session and CSRF-based authentication
 
 - Email: [qwejinoohan@gmail.com](mailto:qwejinoohan@gmail.com)
 - GitHub: [@harukiki97](https://github.com/harukiki97)
-- LinkedIn: www.linkedin.com/in/jinwoo-han-980536408
+- LinkedIn: [Jinwoo Han](www.linkedin.com/in/jinwoo-han-980536408)
 - Open to opportunities: security engineer and full-stack developer roles
 - Main keywords: `WebAssembly`, `V8`, `WasmEdge`, `Runtime Security`, `Compiler Correctness`, `React`, `TypeScript`, `Spring Boot`
