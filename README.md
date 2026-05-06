@@ -18,14 +18,14 @@ I work on low-level issues where small implementation assumptions become reprodu
 - Researching WebAssembly runtime and browser engine security
 - **Open to opportunities**: security engineer and full-stack developer roles
 
-## Evidence Highlights
+## Featured Work Summary
 
-| Area | Evidence |
+| Project | Summary |
 | --- | --- |
-| WasmEdge security research | On the vulnerable revision, ASan reported a host-side `ValueStack` heap OOB write. On the patched tree, the same malformed path fails closed with `IndirectCallTypeMismatch`. |
-| V8 compiler bug analysis | Reproduced branch, table index, memory read/write, and trap behavior divergence between baseline and optimized tiers. The divergence disappears with the `--nowasm-simd-opt` control run. |
-| PINT full-stack project | Visual evidence of a photo-first masonry feed using real post preview data, hover metadata, and like feedback UI. |
-| Patent-pending architecture | **Leviathan Engine**, a WebAssembly-based deterministic memory shredding architecture for sensitive data in browser-based managed runtimes. Formalities review passed. |
+| WasmEdge Validator Soundness Vulnerability | Found a typed function reference validation gap and reproduced malformed Wasm module acceptance, runtime invariant breakage, and host-side heap OOB write. Upstream PR and regression tests were merged. |
+| V8 Turboshaft Wasm SIMD Compiler Bug | Found an ARM64 optimized-tier miscompilation that violated WebAssembly SIMD semantics. Tracked the report through Chromium Issue Tracker and V8 Gerrit until the fix landed. |
+| Leviathan Engine | Patent-pending security architecture that tracks sensitive bytes in WebAssembly linear memory and deterministically overwrites exact allocation ranges. |
+| PINT | Photo location and filter-sharing platform. Frontend work included masonry feed behavior, interaction design, SPA auth UX, and team collaboration. |
 
 ## Visual Evidence
 
@@ -84,14 +84,12 @@ The same reproducer does not diverge when run with `--nowasm-simd-opt`, isolatin
 - Contributions: Masonry-style feed, infinite scrolling, image preload and animation flow, feed card hover interactions, like micro-interactions, profile state synchronization
 - Links: [Frontend](https://github.com/Team-Pint/Pint-Frontend), [Backend](https://github.com/Team-Pint/Pint-Backend), [Live Demo](https://pint-frontend-three.vercel.app/login)
 
-## Featured Work Summary
+## What I Care About
 
-| Project | Summary |
-| --- | --- |
-| WasmEdge Validator Soundness Vulnerability | Found a typed function reference validation gap and reproduced malformed Wasm module acceptance, runtime invariant breakage, and host-side heap OOB write. Upstream PR and regression tests were merged. |
-| V8 Turboshaft Wasm SIMD Compiler Bug | Found an ARM64 optimized-tier miscompilation that violated WebAssembly SIMD semantics. Tracked the report through Chromium Issue Tracker and V8 Gerrit until the fix landed. |
-| Leviathan Engine | Patent-pending security architecture that tracks sensitive bytes in WebAssembly linear memory and deterministically overwrites exact allocation ranges. |
-| PINT | Photo location and filter-sharing platform. Frontend work included masonry feed behavior, interaction design, SPA auth UX, and team collaboration. |
+- Validation gaps that turn into memory-safety failures at runtime
+- Whether compiler optimizations preserve source-level semantics
+- Reporting security findings with reproducible evidence rather than overstated impact
+- Connecting low-level analysis to user-facing product quality
 
 ## Technical Focus
 
