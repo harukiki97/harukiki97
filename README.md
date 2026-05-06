@@ -1,4 +1,4 @@
-# kiki
+# KIKI | Security-minded Full-stack Developer
 
 > WebAssembly runtime security, browser engine bug analysis, and full-stack product development.
 
@@ -17,6 +17,13 @@ I work on low-level issues where small implementation assumptions become reprodu
 - Hyundai AutoEver Mobility SW School, 3rd cohort, in progress through June 2026
 - Researching WebAssembly runtime and browser engine security
 - **Open to opportunities**: security engineer and full-stack developer roles
+
+## Highlights
+
+- Reported a WasmEdge validator soundness issue; upstream PR and regression tests were merged.
+- Reproduced a V8 Turboshaft Wasm SIMD miscompilation and tracked the fix through Chromium/V8.
+- Built PINT, a photo location and filter-sharing platform, focusing on masonry feed UX,
+  infinite scrolling, SPA auth UX, and frontend state synchronization.
 
 ## Featured Work Summary
 
