@@ -33,7 +33,7 @@ I work on low-level issues where small implementation assumptions become reprodu
 
 On the vulnerable revision, a malformed active element segment using typed function references passed validation and reached executor paths. Under ASan, this reproduced a host-process `ValueStack` heap OOB write. On the patched tree, the same malformed path is blocked with `IndirectCallTypeMismatch`, showing fail-closed behavior.
 
-![WasmEdge reproducer evidence](./evidence/wasmedge-reproducer-evidence.png)
+![WasmEdge reproducer evidence](./evidence/wasmedge-reproducer-evidence-full.svg)
 
 - Upstream fix: [WasmEdge PR #4814](https://github.com/WasmEdge/WasmEdge/pull/4814)
 - Status: upstream fix merged, GHSA/CVE advisory process in progress
@@ -43,7 +43,7 @@ On the vulnerable revision, a malformed active element segment using typed funct
 
 I reproduced an ARM64 miscompilation in V8 Turboshaft's Wasm SIMD shuffle reducer. The demanded-byte analysis underestimated required input bytes when demand propagated through a low-half widening operation.
 
-![V8 reproducer evidence](./evidence/v8-reproducer-evidence.png)
+![V8 reproducer evidence](./evidence/v8-reproducer-evidence-full.svg)
 
 - Chromium issue: [508025392](https://issues.chromium.org/issues/508025392)
 - V8 fix CL: [7806230](https://chromium-review.googlesource.com/c/v8/v8/+/7806230)

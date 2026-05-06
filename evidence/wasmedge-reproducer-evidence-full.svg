@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="860" viewBox="0 0 1280 860">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="55%" stop-color="#172554"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="ok" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#14b8a6"/>
+      <stop offset="100%" stop-color="#22c55e"/>
+    </linearGradient>
+    <linearGradient id="warn" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#ef4444"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+    <style>
+      .title { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 42px; font-weight: 800; fill: #f8fafc; }
+      .subtitle { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 21px; fill: #cbd5e1; }
+      .label { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 18px; font-weight: 700; fill: #f8fafc; }
+      .body { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 18px; fill: #dbeafe; }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 17px; fill: #e5e7eb; }
+      .muted { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 16px; fill: #94a3b8; }
+      .smallmono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 15px; fill: #cbd5e1; }
+    </style>
+  </defs>
+
+  <rect width="1280" height="860" fill="url(#bg)"/>
+  <circle cx="1100" cy="110" r="220" fill="#2563eb" opacity="0.16"/>
+  <circle cx="155" cy="780" r="250" fill="#14b8a6" opacity="0.12"/>
+
+  <text x="64" y="82" class="title">WasmEdge Reproducer Evidence</text>
+  <text x="64" y="118" class="subtitle">Validator soundness issue in active element typed references</text>
+
+  <g transform="translate(64,154)">
+    <rect width="1152" height="72" rx="20" fill="#020617" opacity="0.72" filter="url(#shadow)"/>
+    <text x="28" y="30" class="label">Upstream status</text>
+    <text x="28" y="56" class="body">Fixed via WasmEdge PR #4814. GHSA/CVE advisory process in progress.</text>
+    <rect x="934" y="19" width="180" height="34" rx="17" fill="url(#ok)"/>
+    <text x="969" y="42" class="label">FIX MERGED</text>
+  </g>
+
+  <g transform="translate(64,258)">
+    <rect width="548" height="408" rx="26" fill="#111827" opacity="0.92" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="548" height="8" rx="4" fill="url(#warn)"/>
+    <text x="30" y="50" class="label">Vulnerable behavior</text>
+    <text x="30" y="82" class="muted">Tested revision: 3805130</text>
+    <text x="30" y="124" class="body">Malformed typed-funcref active element</text>
+    <text x="30" y="150" class="body">was accepted and reached executor paths.</text>
+
+    <rect x="30" y="182" width="488" height="166" rx="16" fill="#020617"/>
+    <text x="50" y="216" class="mono">ASan result</text>
+    <text x="50" y="246" class="smallmono">ERROR: heap-buffer-overflow</text>
+    <text x="50" y="272" class="smallmono">WRITE of size 16</text>
+    <text x="50" y="298" class="smallmono">top frame: runLocalSetOp</text>
+    <text x="50" y="324" class="smallmono">target: executor ValueStack heap</text>
+
+    <text x="30" y="382" class="muted">Impact: host-process heap OOB write, not guest linear memory.</text>
+  </g>
+
+  <g transform="translate(668,258)">
+    <rect width="548" height="408" rx="26" fill="#111827" opacity="0.92" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="548" height="8" rx="4" fill="url(#ok)"/>
+    <text x="30" y="50" class="label">Patched behavior</text>
+    <text x="30" y="82" class="muted">Re-run on patched local tree: 2026-05-06</text>
+    <text x="30" y="124" class="body">The same malformed path is blocked</text>
+    <text x="30" y="150" class="body">before reaching unsafe ValueStack access.</text>
+
+    <rect x="30" y="182" width="488" height="166" rx="16" fill="#020617"/>
+    <text x="50" y="216" class="mono">Runtime result</text>
+    <text x="50" y="246" class="smallmono">execution failed:</text>
+    <text x="50" y="272" class="smallmono">IndirectCallTypeMismatch</text>
+    <text x="50" y="298" class="smallmono">instruction: call_ref</text>
+    <text x="50" y="324" class="smallmono">expected ref_null type[1]</text>
+
+    <text x="30" y="382" class="muted">Impact: fail-closed type mismatch instead of OOB write.</text>
+  </g>
+
+  <g transform="translate(64,704)">
+    <rect width="1152" height="94" rx="22" fill="#020617" opacity="0.78"/>
+    <text x="28" y="36" class="label">Security takeaway</text>
+    <text x="28" y="66" class="body">A validator type-checking gap crossed the validator/executor boundary and reached host-side memory safety conditions.</text>
+    <text x="28" y="90" class="muted">Public evidence omits weaponized exploit details, payloads, heap grooming, and control-flow hijack steps.</text>
+  </g>
+</svg>
