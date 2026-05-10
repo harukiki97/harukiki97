@@ -56,6 +56,7 @@ I reproduced an ARM64 miscompilation in V8 Turboshaft's Wasm SIMD shuffle reduce
 - V8 fix CL: [7806230](https://chromium-review.googlesource.com/c/v8/v8/+/7806230)
 - Merged commit: [`f56988e0207f8a4ce295b46ad4c50367140f899e`](https://chromium.googlesource.com/v8/v8/+/f56988e0207f8a4ce295b46ad4c50367140f899e)
 - Full reproducer output: [v8-reproducer-output.md](./evidence/v8-reproducer-output.md)
+- Google VRP status: triaged as a valid security issue, reward decision in progress
 
 <details>
 <summary>Key V8 divergence signals</summary>
