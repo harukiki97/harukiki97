@@ -8,9 +8,9 @@
 [![React](https://img.shields.io/badge/React%20%2F%20TypeScript-61DAFB?style=flat-square&logo=react&logoColor=111111)](https://react.dev/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=flat-square&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 
-Hello, I am **Jinwoo Han**, a developer focused on WebAssembly runtime security, browser engine behavior, compiler optimization bugs, and full-stack product development.
+Hello, I am **Jinwoo Han**, a developer focused on WebAssembly runtime security, browser engine bug hunting, compiler optimization bugs, and full-stack product development.
 
-I work on low-level issues where small implementation assumptions become reproducible evidence: validator soundness gaps, runtime invariants, sanitizer findings, compiler semantic divergence, and upstream-ready bug reports. I also build user-facing web products with React, TypeScript, Spring Boot, and cloud infrastructure.
+I find and report low-level bugs where small implementation assumptions become security or correctness impact: validator soundness gaps, runtime invariants, sanitizer findings, compiler semantic divergence, and upstream-ready vulnerability reports. I also build user-facing web products with React, TypeScript, Spring Boot, and cloud infrastructure.
 
 ## Currently
 
@@ -20,8 +20,8 @@ I work on low-level issues where small implementation assumptions become reprodu
 
 ## Highlights
 
-- Reported a WasmEdge validator soundness issue; upstream PR and regression tests were merged.
-- Reproduced a V8 Turboshaft Wasm SIMD miscompilation and tracked the fix through Chromium/V8.
+- Discovered and responsibly reported a WasmEdge validator soundness vulnerability; upstream PR and regression tests were merged, and the GHSA/CVE process is in progress.
+- Discovered a V8 Turboshaft Wasm SIMD miscompilation and reported it through Google VRP; the fix CL landed upstream, and reward review is in progress.
 - Built PINT, a photo location and filter-sharing platform, focusing on masonry feed UX,
   infinite scrolling, SPA auth UX, and frontend state synchronization.
 
@@ -29,16 +29,16 @@ I work on low-level issues where small implementation assumptions become reprodu
 
 | Project | Summary |
 | --- | --- |
-| WasmEdge Validator Soundness Vulnerability | Found a typed function reference validation gap and reproduced malformed Wasm module acceptance, runtime invariant breakage, and host-side heap OOB write. Upstream PR and regression tests were merged. |
-| V8 Turboshaft Wasm SIMD Compiler Bug | Found an ARM64 optimized-tier miscompilation that violated WebAssembly SIMD semantics. Tracked the report through Chromium Issue Tracker and V8 Gerrit until the fix landed. |
+| WasmEdge Validator Soundness Vulnerability | Discovered a typed function reference validation gap in WasmEdge, responsibly reported the issue, and demonstrated malformed Wasm module acceptance, runtime invariant breakage, and host-side heap OOB write. Upstream fix and regression tests were merged; GHSA/CVE process is in progress. |
+| V8 Turboshaft Wasm SIMD Compiler Bug | Discovered an ARM64 optimized-tier miscompilation in V8 Turboshaft's Wasm SIMD optimizer and reported it through Google VRP. The upstream V8 fix CL landed with a regression test; reward review is in progress. |
 | Leviathan Engine | Patent-pending security architecture that tracks sensitive bytes in WebAssembly linear memory and deterministically overwrites exact allocation ranges. |
 | PINT | Photo location and filter-sharing platform. Frontend work included masonry feed behavior, interaction design, SPA auth UX, and team collaboration. |
 
 ## Visual Evidence
 
-### WasmEdge Reproducer Evidence
+### WasmEdge Vulnerability Evidence
 
-On the vulnerable revision, a malformed active element segment using typed function references passed validation and reached executor paths. Under ASan, this reproduced a host-process `ValueStack` heap OOB write. On the patched tree, the same malformed path is blocked with `IndirectCallTypeMismatch`, showing fail-closed behavior.
+I discovered a validator soundness issue in WasmEdge involving active element segments with typed function references. On the vulnerable revision, my targeted malformed module passed validation and reached executor paths. Under ASan, it triggered a host-process `ValueStack` heap OOB write. On the patched tree, the same malformed path is blocked with `IndirectCallTypeMismatch`, showing fail-closed behavior.
 
 ![WasmEdge reproducer evidence](./evidence/wasmedge-reproducer-evidence-full.svg)
 
@@ -46,9 +46,9 @@ On the vulnerable revision, a malformed active element segment using typed funct
 - Status: upstream fix merged, GHSA/CVE advisory process in progress
 - Key point: the observed memory-safety impact was in the executor's host-side `ValueStack`, not guest linear memory
 
-### V8 Reproducer Evidence
+### V8 Turboshaft Bug Evidence
 
-I reproduced an ARM64 miscompilation in V8 Turboshaft's Wasm SIMD shuffle reducer. The demanded-byte analysis underestimated required input bytes when demand propagated through a low-half widening operation.
+I discovered an ARM64 miscompilation in V8 Turboshaft's Wasm SIMD shuffle reducer and reported it through Google VRP. The root cause was demanded-byte analysis underestimating required input bytes when demand propagated through a low-half widening operation.
 
 ![V8 reproducer evidence](./evidence/v8-reproducer-evidence-full.svg)
 
@@ -56,7 +56,7 @@ I reproduced an ARM64 miscompilation in V8 Turboshaft's Wasm SIMD shuffle reduce
 - V8 fix CL: [7806230](https://chromium-review.googlesource.com/c/v8/v8/+/7806230)
 - Merged commit: [`f56988e0207f8a4ce295b46ad4c50367140f899e`](https://chromium.googlesource.com/v8/v8/+/f56988e0207f8a4ce295b46ad4c50367140f899e)
 - Full reproducer output: [v8-reproducer-output.md](./evidence/v8-reproducer-output.md)
-- Google VRP status: triaged as a valid security issue, reward decision in progress
+- Google VRP status: reported by me, triaged as a valid security issue, reward decision in progress
 
 <details>
 <summary>Key V8 divergence signals</summary>
@@ -78,7 +78,7 @@ trap baseline:     returns normally
 trap optimized:    RuntimeError: memory access out of bounds
 ```
 
-The same reproducer does not diverge when run with `--nowasm-simd-opt`, isolating the issue to the Wasm SIMD optimization path.
+My control run with `--nowasm-simd-opt` does not diverge, isolating the issue to the Wasm SIMD optimization path.
 
 </details>
 
